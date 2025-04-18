@@ -1,47 +1,36 @@
-[
-    {
-        "key": "sb",
-        "value": "lrf_Z56f0bUQQrkWFh9VZb4e",
-        "domain": "facebook.com",
-        "path": "/",
-        "hostOnly": false,
-        "creation": "2025-04-18T16:12:00.599Z",
-        "lastAccessed": "2025-04-18T16:12:00.599Z"
-    },
-    {
-        "key": "datr",
-        "value": "l3kCaBlmLntq84scmsQ4xuG0",
-        "domain": "facebook.com",
-        "path": "/",
-        "hostOnly": false,
-        "creation": "2025-04-18T16:12:00.599Z",
-        "lastAccessed": "2025-04-18T16:12:00.599Z"
-    },
-    {
-        "key": "m_pixel_ratio",
-        "value": "3.597440719604492",
-        "domain": "facebook.com",
-        "path": "/",
-        "hostOnly": false,
-        "creation": "2025-04-18T16:12:00.599Z",
-        "lastAccessed": "2025-04-18T16:12:00.599Z"
-    },
-    {
-        "key": "wd",
-        "value": "300x593",
-        "domain": "facebook.com",
-        "path": "/",
-        "hostOnly": false,
-        "creation": "2025-04-18T16:12:00.599Z",
-        "lastAccessed": "2025-04-18T16:12:00.599Z"
-    },
-    {
-        "key": "fr",
-        "value": "0oaexPKkDfeL32UAY..BoAnmX..AAA.0.0.BoAnm5.AWe6HMKT0IVaTZhlUMFpq2MUHIw",
-        "domain": "facebook.com",
-        "path": "/",
-        "hostOnly": false,
-        "creation": "2025-04-18T16:12:00.599Z",
-        "lastAccessed": "2025-04-18T16:12:00.599Z"
-    }
-]
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    # Step to check out the repository code
+    - uses: actions/checkout@v2
+
+    # Step to set up the specified Node.js version
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    # Step to install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step to run the bot with the correct port
+    - name: Start the bot
+      env:
+        PORT: 8080
+      run: npm start
